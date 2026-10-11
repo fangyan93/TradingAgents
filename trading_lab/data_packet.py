@@ -10,7 +10,8 @@ import pandas as pd
 from stockstats import wrap
 
 from tradingagents.dataflows.config import set_config
-from tradingagents.dataflows.stockstats_utils import load_ohlcv
+from tradingagents.dataflows.errors import VendorError
+from tradingagents.dataflows.vendors.yahoo.ohlcv import load_ohlcv
 from tradingagents.default_config import DEFAULT_CONFIG
 
 
@@ -44,7 +45,7 @@ def _discard_malformed_cache(symbol: str, cache_dir: Path) -> None:
 def _instrument_snapshot(symbol: str, as_of: str) -> dict[str, Any]:
     try:
         data = load_ohlcv(symbol, as_of)
-    except (KeyError, OSError, pd.errors.ParserError) as exc:
+    except (KeyError, OSError, pd.errors.ParserError, VendorError) as exc:
         raise MarketDataUnavailableError(
             f"Could not load usable Yahoo Finance OHLCV data for {symbol} on or before {as_of}. "
             "Check the network connection and retry."
