@@ -217,3 +217,8 @@ __marimo__/
 
 # Cache
 **/data_cache/
+
+# Local, dated research packets and Codex reports. These can contain market
+# data and personal journal notes, so they are intentionally not versioned.
+trading_lab/data_cache/
+trading_lab/runs/

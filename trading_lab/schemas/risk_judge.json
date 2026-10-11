@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["research_stance", "risk_flags", "conditions_to_monitor", "rule_check"],
+  "properties": {
+    "research_stance": {"type": "string", "enum": ["observe", "cautious_observe", "insufficient_data"]},
+    "risk_flags": {"type": "array", "items": {"type": "string"}},
+    "conditions_to_monitor": {"type": "array", "items": {"type": "string"}},
+    "rule_check": {"type": "string", "enum": ["insufficient_data", "research_only"]}
+  }
+}
