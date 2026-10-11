@@ -1,9 +1,12 @@
 import unittest
 
-from cli.utils import normalize_ticker_symbol
-from tradingagents.agents.utils.agent_utils import build_instrument_context
+import pytest
+
+from cli.prompts import normalize_ticker_symbol
+from tradingagents.agents.context import build_instrument_context
 
 
+@pytest.mark.unit
 class TickerSymbolHandlingTests(unittest.TestCase):
     def test_normalize_ticker_symbol_preserves_exchange_suffix(self):
         self.assertEqual(normalize_ticker_symbol(" cnc.to "), "CNC.TO")
@@ -12,6 +15,13 @@ class TickerSymbolHandlingTests(unittest.TestCase):
         context = build_instrument_context("7203.T")
         self.assertIn("7203.T", context)
         self.assertIn("exchange suffix", context)
+
+    def test_single_get_ticker_no_shadow(self):
+        # A second get_ticker with an empty prompt (a bare "?") once shadowed
+        # the descriptive one; the selection flow must use the one in prompts.
+        import cli.prompts
+        import cli.selections
+        self.assertIs(cli.selections.get_ticker, cli.prompts.get_ticker)
 
 
 if __name__ == "__main__":
